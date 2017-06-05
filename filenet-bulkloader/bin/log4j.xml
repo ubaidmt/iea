@@ -1,0 +1,37 @@
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="NullAppender" class="org.apache.log4j.varia.NullAppender">
+    </appender>
+    
+	<appender name="BulkLoaderTraceDatedLogFile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="./iea-bulkloader.log"/>
+		<param name="DatePattern" value=".dd-MM-yyyy"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%t] %c (%M:%L) - %m%n"/>
+		</layout>
+	</appender>    
+    
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%d %p [%t] %c (%M:%L) - %m%n" /> 
+	    </layout>
+    </appender>
+	
+	<logger name="mx.com.sacs.bulkloader" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="BulkLoaderTraceDatedLogFile"/>
+		<appender-ref ref="console"/>
+	</logger>
+	
+	<logger name="mx.com.sacs.bulkloader.util" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="BulkLoaderTraceDatedLogFile"/>
+		<appender-ref ref="console"/>
+	</logger>
+		
+  <root>
+      <level value="off"/>
+      <appender-ref ref="NullAppender"/>
+  </root>
+</log4j:configuration>

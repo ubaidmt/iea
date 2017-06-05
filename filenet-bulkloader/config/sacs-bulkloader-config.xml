@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sacs-bulkloader version='1.0'>
+	<ceconnection>
+		<!-- EJB Transport -->
+		<!-- <setting name="uri" value="iiop://192.168.0.150:2809/FileNet/Engine" 
+			/> <setting name="stanza" value="FileNetP8Engine" /> -->
+		<!-- WSI Transport -->
+		<setting name="uri" value="http://192.168.0.150:9080/wsi/FNCEWS40MTOM/" />
+		<setting name="stanza" value="FileNetP8WSI" />
+		<setting name="user" value="Administrator" />
+		<setting name="pass" value="filenet" />
+		<setting name="os" value="ABCMX" />
+	</ceconnection>
+
+	<bulkloaders>
+		<!-- Each batchconfig element is an independent thread -->
+		<batchconfig>
+			<setting name="baseFolder" value="C:/Documents and Settings/lcervantes/Desktop/IEA/2010" />
+			<setting name="fileReference" value="ejemplo.csv" />
+			<setting name="outputFile" value="myejemplo.csv" />
+			<setting name="delimeter" value="," />
+			<setting name="containHeader" value="false" />
+			<setting name="dateFormat" value="dd/MM/yyyy" />
+			<setting name="osFolder" value="/Recibos de Nómina" />
+			<setting name="validateDuplicates" value="true" />
+			<setting name="batchSize" value="25" />
+			<setting name="validatePDF" value="false"></setting>
+		</batchconfig>
+	</bulkloaders>
+	
+	<docclasses pos="0" default="01">
+		<!-- Valid macros for default values: {FILENAME}, {FILEPATH} -->
+		<docclass name="Document" value="00" filepos="0" pagespos="1">
+			<property name="DocumentTitle" type="string" pos=""	default="{FILENAME}" />
+		</docclass>
+
+		<docclass name="DocumentoReciboNomina" value="01" filepos="0" pagespos="1" delimiter-values="|" >
+			<property name="DocumentTitle" type="string" pos="[Documento]+2" required="true"></property>
+			<property name="Anyo" type="integer" pos="3" required="true"></property>
+			<property name="Quincena" type="string" pos="4" multi-value="T" index="00" required="true"></property>
+			<property name="CentroTrabajo" type="string" pos="5" multi-value="T" index="01" required="true"></property>
+			<property name="TipodeIngreso" type="string" pos="" default="Historico" required="true"/>
+		</docclass>
+	</docclasses>
+	
+	<!-- Valid folder class segments: FIRST, BETWEEN, LAST -->
+	<folderclasses>
+	   <folderclass name="Folder" segment="first" createPath="true" pathPos="3" delimiter-values="|" >
+		</folderclass>
+	</folderclasses>
+	
+	<customobjectclasses>
+		<customobjectclass name="Quincena" value="00" path="/Indices/Quincena" >
+			<property name="IndexStr" type="string" pos="4" multi-value="T"></property>
+		</customobjectclass>
+		
+		<customobjectclass name="CentroTrabajo" value="01" path="/Indices/Centro de trabajo" >
+			<property name="IndexStr" type="string" pos="5" multi-value="T"></property>
+		</customobjectclass>
+	</customobjectclasses>
+</sacs-bulkloader>
